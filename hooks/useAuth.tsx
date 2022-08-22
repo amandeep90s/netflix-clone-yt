@@ -5,6 +5,7 @@ import {
 	signOut,
 	User,
 } from 'firebase/auth';
+
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { auth } from '../firebase';
@@ -32,31 +33,34 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [loading, setLoading] = useState(false);
-	const [user, setUser] = useState<User | null>(null);
 	const router = useRouter();
-	const [initialLoading, setInitialLoading] = useState(true);
+	const [user, setUser] = useState<User | null>(null);
 	const [error, setError] = useState(null);
-	// Persisting the user
-	useEffect(() => {
-		onAuthStateChanged(auth, (user) => {
-			if (user) {
-				// Logged in
-				setUser(user);
-				setLoading(false);
-			} else {
-				// Not Logged in
-				setUser(null);
-				setLoading(true);
-				router.push('/');
-			}
+	const [initialLoading, setInitialLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 
-			setInitialLoading(true);
-		});
-	}, [auth]);
+	useEffect(
+		() =>
+			onAuthStateChanged(auth, (user) => {
+				if (user) {
+					// Logged in...
+					setUser(user);
+					setLoading(false);
+				} else {
+					// Not logged in...
+					setUser(null);
+					setLoading(true);
+					router.push('/login');
+				}
+
+				setInitialLoading(false);
+			}),
+		[auth]
+	);
 
 	const signUp = async (email: string, password: string) => {
 		setLoading(true);
+
 		await createUserWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				setUser(userCredential.user);
@@ -84,6 +88,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const logout = async () => {
 		setLoading(true);
+
 		signOut(auth)
 			.then(() => {
 				setUser(null);
@@ -96,15 +101,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	};
 
 	const memoedValue = useMemo(
-		() => ({
-			user,
-			error,
-			signUp,
-			signIn,
-			loading,
-			logout,
-		}),
-		[user, loading]
+		() => ({ user, signUp, signIn, error, loading, logout }),
+		[user, loading, error]
 	);
 
 	return (
@@ -114,6 +112,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	);
 };
 
+// Let's only export the `useAuth` hook instead of the context.
+// We only want to use the hook directly and never the context comopnent.
 export default function useAuth() {
 	return useContext(AuthContext);
 }

@@ -1,8 +1,8 @@
-import { signInAnonymously } from 'firebase/auth';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import useAuth from '../hooks/useAuth';
 
 interface Inputs {
 	email: string;
@@ -11,17 +11,20 @@ interface Inputs {
 
 const Login = () => {
 	const [login, setLogin] = useState(false);
+	const { signIn, signUp } = useAuth();
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<Inputs>();
 
-	const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
+	const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+		console.log(data);
 		if (login) {
-			// TODO await singIn(email, password)
+			await signIn(data.email, data.password);
 		} else {
-			// TODO await singUp(email, password)
+			await signUp(data.email, data.password);
 		}
 	};
 
