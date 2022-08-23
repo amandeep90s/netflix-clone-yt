@@ -5,6 +5,9 @@ import requests from '../utils/requests';
 import { Props } from '../typings';
 import Row from '../components/Row';
 import useAuth from '../hooks/useAuth';
+import { useRecoilValue } from 'recoil';
+import { modalState } from '../atoms/modalAtom';
+import Modal from '../components/Modal';
 
 const Home = ({
 	netflixOriginals,
@@ -17,11 +20,16 @@ const Home = ({
 	trendingNow,
 }: Props) => {
 	const { loading } = useAuth();
+	const showModal = useRecoilValue(modalState);
 
 	if (loading) return 'Loading..';
 
 	return (
-		<div className='relative h-screen bg-gradient-to-b lg:h-[140vh]'>
+		<div
+			className={`relative h-screen bg-gradient-to-b lg:h-[140vh] ${
+				showModal && '!h-screen overflow-hidden'
+			}`}
+		>
 			<Head>
 				<title>Netflix Clone App</title>
 				<link rel='icon' href='/favicon.ico' />
@@ -41,7 +49,7 @@ const Home = ({
 					<Row title='Documentaries' movies={documentaries} />
 				</section>
 			</main>
-			{/* Modal */}
+			{showModal && <Modal />}
 		</div>
 	);
 };
