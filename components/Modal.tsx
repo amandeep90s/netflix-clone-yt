@@ -139,7 +139,7 @@ function Modal() {
 					onClick={handleClose}
 					className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[#181818] hover:bg-[#181818]'
 				>
-					<XIcon className='w-6 h-6' />
+					<XIcon className='h-6 w-6' />
 				</button>
 
 				<div className='relative pt-[56.25%]'>
@@ -152,10 +152,10 @@ function Modal() {
 						muted={muted}
 					/>
 
-					<div className='absolute flex items-center justify-between w-full px-10 bottom-10'>
+					<div className='absolute bottom-10 flex w-full items-center justify-between px-10'>
 						<div className='flex space-x-2'>
 							<button className='flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]'>
-								<FaPlay className='text-black h-7 w-7' />
+								<FaPlay className='h-7 w-7 text-black' />
 								Play
 							</button>
 
@@ -168,15 +168,15 @@ function Modal() {
 							</button>
 
 							<button className='modalButton'>
-								<ThumbUpIcon className='w-6 h-6' />
+								<ThumbUpIcon className='h-6 w-6' />
 							</button>
 						</div>
 
 						<button className='modalButton' onClick={() => setMuted(!muted)}>
 							{muted ? (
-								<VolumeOffIcon className='w-6 h-6' />
+								<VolumeOffIcon className='h-6 w-6' />
 							) : (
-								<VolumeUpIcon className='w-6 h-6' />
+								<VolumeUpIcon className='h-6 w-6' />
 							)}
 						</button>
 					</div>
@@ -196,7 +196,7 @@ function Modal() {
 								HD
 							</div>
 						</div>
-						<div className='flex flex-col font-light gap-x-10 gap-y-4 md:flex-row'>
+						<div className='flex flex-col gap-x-10 gap-y-4 font-light md:flex-row'>
 							<p className='w-5/6'>{movie?.overview}</p>
 							<div className='flex flex-col space-y-3 text-sm'>
 								<div>
