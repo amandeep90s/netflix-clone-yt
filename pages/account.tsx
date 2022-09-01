@@ -5,7 +5,7 @@ import useSubscription from "../hooks/useSubscription";
 import Membership from "../components/Membership";
 import { useState } from "react";
 import { getProducts, Product } from "@stripe/firestore-stripe-payments";
-import payments from "../lib/stripe";
+import payments, { goToBillingPortal } from "../lib/stripe";
 import { GetStaticProps } from "next";
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 const Account = ({ products }: Props) => {
   const { user, loading, logout } = useAuth();
   const subscription = useSubscription(user);
-  const [isBillingLoading, setIsBillingLoading] = useState(false);
 
   if (loading) return null;
 
@@ -78,6 +77,7 @@ const Account = ({ products }: Props) => {
             className={
               "cursor-pointer text-blue-500  hover:underline md:text-right"
             }
+            onClick={goToBillingPortal}
           >
             Change plan
           </p>

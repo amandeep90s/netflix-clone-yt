@@ -6,12 +6,13 @@ import { Props } from "../typings";
 import Row from "../components/Row";
 import useAuth from "../hooks/useAuth";
 import { useRecoilValue } from "recoil";
-import { modalState } from "../atoms/modalAtom";
+import { modalState, movieState } from "../atoms/modalAtom";
 import Modal from "../components/Modal";
 import Plans from "../components/Plans";
 import { getProducts } from "@stripe/firestore-stripe-payments";
 import payments from "../lib/stripe";
 import useSubscription from "../hooks/useSubscription";
+import useList from "../hooks/useList";
 
 const Home = ({
   netflixOriginals,
@@ -27,6 +28,8 @@ const Home = ({
   const { loading, user } = useAuth();
   const showModal = useRecoilValue(modalState);
   const subscription = useSubscription(user);
+  const movie = useRecoilValue(movieState);
+  const list = useList(user?.uid);
 
   if (loading) return "Loading..";
 
@@ -50,7 +53,7 @@ const Home = ({
           <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
           <Row title="Action  Thrillers" movies={actionMovies} />
-          {/* My List */}
+          {list.length > 0 && <Row title={"My List"} movies={list} />}
           <Row title="Comedies" movies={comedyMovies} />
           <Row title="Scary Movies" movies={horrorMovies} />
           <Row title="Romance Movies" movies={romanceMovies} />
