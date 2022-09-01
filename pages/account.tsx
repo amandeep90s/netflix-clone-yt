@@ -23,7 +23,6 @@ const Account = ({ products }: Props) => {
     <div>
       <Head>
         <title>Account Settings - Netflix</title>
-        <link rel="stylesheet" href="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
